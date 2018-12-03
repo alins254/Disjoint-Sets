@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+typedef struct node{
+    int val;
+    int size;
+    struct node* parent;
+}NodeT*;
+
+NodeT* makeSet(int x){
+    NodeT* n = (NodeT*)calloc(sizeof(NodeT),1);
+    n->val=x;
+    n->size=0;
+    n->parent=n;
+}
+
+void union(NodeT* x, NodeT* y){
+    if(NULL==x||NULL==y)
+        return;
+    NodeT* xRoot = findSet(x);
+    NodeT* yRoot = findSet(y);
+    if(xRoot->size>=yRoot->size){
+        yRoot->parent=xRoot;
+        xRoot->size++;
+    }
+    else{
+        xRoot->parent=yRoot;
+        yRoot->size++;
+    }
+}
+
+NodeT* findSet(NodeT* x){
+    if(x!=x->parent)
+        x->parent = findSet(x->parent);
+    return x;
+}
